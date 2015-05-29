@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 public class FeedbackReader {
 	private static final String[] Punctuations = {",",";","\\.","!","\\?"};
 	private static final String[] sentimentChangers = {"not","could be","could have been","should be","should have been",
-		"never","n't","no more","no way","no chance","no"};
+		"never","n't","no more","no way","no chance"};
 	private static final String[] preJoiners = {"un","in","il","im","ir","non","mis","mal","dis","anti","de","under"};
 	private static final String POSITIVE = "positive";
 	private static final String NEGATIVE = "negative";
@@ -132,16 +132,16 @@ public class FeedbackReader {
 				comment = comment.trim();
 				if(sentence.toLowerCase().contains(comment.toLowerCase())){
 					for(String sentiChanger: sentimentChangers){
-						Pattern p = Pattern.compile("("+sentiChanger+")(.*)("+comment+")");
-						Matcher m = p.matcher(sentence);
+						Pattern p = Pattern.compile("("+sentiChanger+")(.*)("+comment.toLowerCase()+")");
+						Matcher m = p.matcher(sentence.toLowerCase());
 						if(m.find()){
 							result = NEGATIVE;
 							break;
 						}
 					}
 					for(String prefix: preJoiners){
-						Pattern p = Pattern.compile("(?<="+prefix+")(.*)(?="+comment+")");
-						Matcher m = p.matcher(sentence);
+						Pattern p = Pattern.compile("(?<="+prefix+")(.*)(?="+comment.toLowerCase()+")");
+						Matcher m = p.matcher(sentence.toLowerCase());
 						if(m.find()){
 							if(m.group().toString().length() == 0){
 								if(!(sentence.toLowerCase().contains("incredible") ||  sentence.toLowerCase().contains("unbelievable") || sentence.toLowerCase().contains("unlimited"))){
@@ -164,8 +164,8 @@ public class FeedbackReader {
 				if(sentence.toLowerCase().contains(comment.toLowerCase())){
 					result = NEGATIVE;
 					for(String sentiChanger: sentimentChangers){
-						Pattern p = Pattern.compile("(" + sentiChanger + ") .* (" + comment + ")");
-						Matcher m = p.matcher(sentence);
+						Pattern p = Pattern.compile("("+sentiChanger+")(.*)("+comment.toLowerCase()+")");
+						Matcher m = p.matcher(sentence.toLowerCase());
 						if(m.find()){
 							result = POSITIVE;
 							break;
